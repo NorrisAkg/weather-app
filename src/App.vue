@@ -1,17 +1,31 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <CitySearch />
+  <WeatherCard />
 </template>
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
+<script setup>
+import { onMounted } from "vue";
+import CitySearch from "./components/CitySearch.vue";
+import WeatherCard from "./components/WeatherCard.vue";
+import { useWeatherStore } from "./stores/Weather.js";
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+const weatherStore = useWeatherStore();
+// const weather = ref(0);
+
+const getWeather = () => {
+  weatherStore
+    .fetchWeather()
+    .then((response) => {
+      return response.json();
+    })
+    .then((result) => {
+      console.log(result);
+    });
+};
+
+onMounted(() => {
+  getWeather();
+});
 </script>
 
 <style>
