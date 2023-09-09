@@ -1,11 +1,6 @@
 <template>
-  <CitySearch @change-name="onUpdateName" />
-  <select v-model="unit">
-    <option value="standard" selected>standard</option>
-    <option value="metrics">Celcius</option>
-    <option value="imperial">Fahrenheit</option>
-  </select>
-  <WeatherCard :weather="weather" />
+  <CitySearch @change-name="onUpdateName" @select-unit="onChangeUnit"/>
+  <WeatherCard :weather="weatherStore.weather" />
 </template>
 
 <script setup>
@@ -15,8 +10,8 @@ import WeatherCard from "./components/WeatherCard.vue";
 import { useWeatherStore } from "./stores/Weather.js";
 
 const weatherStore = useWeatherStore();
-const weather = ref(0);
-const city = ref("");
+// const weather = ref(0);
+const city = ref("Cotonou");
 const unit = ref("");
 
 const onUpdateName = (e) => {
@@ -24,16 +19,20 @@ const onUpdateName = (e) => {
   console.log("name changed", city.value);
   console.log("event result", e);
 };
+
+const onChangeUnit = (e) => {
+  unit.value = e.value;
+  console.log("unit change", unit.value);
+  console.log("unit event", e);
+};
+
 const getWeather = () => {
   console.log("fetchimg");
   weatherStore
     .fetchWeather(city.value, unit.value)
-    .then((response) => {
-      return response.json();
-    })
-    .then((result) => {
-      weather.value = result;
-      console.log(result);
+    .then()
+    .catch((error) => {
+      console.log(error);
     });
 };
 
@@ -42,9 +41,9 @@ watch(city, (val) => {
 });
 
 watch(unit, (_) => {
-  console.log(_)
-  getWeather()
-})
+  console.log(_);
+  getWeather();
+});
 
 onMounted(() => {
   getWeather();
@@ -52,12 +51,5 @@ onMounted(() => {
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>
