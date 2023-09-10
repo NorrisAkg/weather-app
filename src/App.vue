@@ -1,12 +1,12 @@
 <template>
   <div class="container">
     <CitySearch @change-name="onUpdateName" @unit-selected="onChangeUnit" />
-    <WeatherCard :weather="weatherStore.weather" :unit="unitSign" />
+    <WeatherCard :weather="weatherStore.weather" :unit="unit" />
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref, watch, computed } from "vue";
+import { onMounted, ref, watch } from "vue";
 import CitySearch from "./components/CitySearch.vue";
 import WeatherCard from "./components/WeatherCard.vue";
 import { useWeatherStore } from "./stores/Weather.js";
@@ -39,9 +39,9 @@ const getWeather = () => {
     });
 };
 
-const unitSign = computed(() => {
-  return unit.value == "metric" ? "C" : "F"
-});
+// const unitSign = computed(() => {
+//   return unit.value == "metric" ? "C" : "F"
+// });
 
 watch(city, (val) => {
   if (val != "") getWeather();

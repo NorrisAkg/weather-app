@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Open+Sans:wght@300&family=Roboto:ital,wght@0,100;1,100;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="meteo">
+        <div class="container">
+            <div class="header">
+                <div class="search">
+                    <label title="recherche"><input type="text" placeholder="Ville...."></label>
+                    <button>S</button>
+                </div>
+                <div class="filter">
+                    <select title="filtre" name="filter" >
+                        <option value="" selected>Test</option>
+                    </select>
+                </div>
+            </div>
+            <div class="body-meteo">
+                <img class="sun-moon" src="./src/assets/images/sun.svg" alt="">
+                <div class="date">
+                    <h1 class="day">Vendredi</h1>
+                    <h2 class="month-year">Décembre 2023</h2>
+                </div>
+                <div class="temperature">
+                    <div class="city">
+                        <h3>Johannesbourg</h3>
+                    </div>
+                    <div class="current-temperature">
+                        <h3>50<sup>&#8451;</sup></h3>
+                    </div>
+                    <div class="min-max-temperature">
+                        <span>min&nbsp;:&nbsp;25<sup>&#8451;</sup></span>
+                        <span>max&nbsp;:&nbsp;30<sup>&#8451;</sup></span>
+                    </div>
+                </div>
+
+                <div class="weather-infos">
+                    <ul class="infos-list">
+                        <li><span class="title">Titre</span><span class="value">Value</span></li>
+                        <li><span class="title">Titre</span><span class="value">Value</span></li>
+                        <li><span class="title">Titre</span><span class="value">Value</span></li>
+                        <li><span class="title">Titre</span><span class="value">Value</span></li>
+                        <li><span class="title">Titre</span><span class="value">Value</span></li>
+                    </ul>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</body>
+</html>
