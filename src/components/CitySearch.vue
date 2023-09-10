@@ -1,14 +1,14 @@
 <template>
   <div class="filter-box">
     <div class="name-box">
-      <input placeholder="Rechercher par nom (pays, ville,...)" type="text" v-model="cityName" />
+      <input @keypress.enter="onSubmit" placeholder="Rechercher par nom de ville..." type="text" v-model="cityName" />
       <button @click="onSubmit" :disabled="cityName == ''">Rechercher</button>
     </div>
 
     <div class="select-box">
-      <select placeholder="Filtrer par unité" @change="onChangeUnit" v-model="unit">
-        <option value="" disabled selected>Filtrer par unité</option>
-        <option value="metrics">Celcius</option>
+      <select @change="onChangeUnit" v-model="unit">
+        <option value="" disabled selected>Filtrer par unité de mesure</option>
+        <option value="metric">Celcius</option>
         <option value="imperial">Fahrenheit</option>
       </select>
     </div>
@@ -23,12 +23,20 @@ const cityName = ref("");
 const unit = ref("");
 
 const onSubmit = () => {
-  emit("changeName", cityName);
-  cityName.value = "";
+  let city = cityName.value
+  emit("changeName", city);
+  resetName()
 };
 
+// 90685648
+
+const resetName = () => {
+  cityName.value = "";
+}
+
 const onChangeUnit = () => {
-  emit("unitSelected", unit);
+  console.log('emit unit', unit)
+  emit("unitSelected", unit.value);
 };
 </script>
 

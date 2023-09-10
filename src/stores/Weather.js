@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-const apiKey = process.env.VUE_APP_API_KEY;
+// const apiKey = process.env.VUE_APP_API_KEY;
 // const apiKey = '6452ac286a14e3d7ed762086fb7c35e0'
 
 // const cityName = 'France'
@@ -15,18 +15,23 @@ export const useWeatherStore = defineStore("weather", {
   actions: {
     async fetchWeather(cityName, unit) {
       console.log("url", baseUrl);
-      return await fetch(`${baseUrl}${cityName}&appid=${apiKey}&units=${unit}`)
-        .then((response) => response.json())
-        .then((result) => {
-          this.weather = result;
-          console.log(this.weather)
-          return result
-        }).catch(error => {
-            console.log(error)
-        })
-      //   this.weather = data;
+      const data = await fetch(
+        `${baseUrl}${cityName}&appid=${'6452ac286a14e3d7ed762086fb7c35e0'}&units=${unit}`
+      ).then((response) => {
+        console.log(response);
+        if (response.status == 404) {
+          throw new Error(
+            "Le pays ou la ville que vous avez demandé n'existe pas. Veuillez revoir la saisie et réessayer"
+          );
+        } else if (response.status == 404) {
+          throw new Error(
+            "Une erreur est survenue! Merci de réessayer plus tard"
+          );
+        }
+        return response.json();
+      });
 
-      //   return data;
+      return data;
     },
   },
 });
