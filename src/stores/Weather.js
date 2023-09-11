@@ -1,11 +1,7 @@
 import { defineStore } from "pinia";
 
-// const apiKey = process.env.VUE_APP_API_KEY;
-// const apiKey = '6452ac286a14e3d7ed762086fb7c35e0'
-
-// const cityName = 'France'
+const apiKey = process.env.VUE_APP_API_KEY;
 const baseUrl = process.env.VUE_APP_API_URL;
-// const baseUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`
 
 export const useWeatherStore = defineStore("weather", {
   state: () => ({
@@ -13,17 +9,23 @@ export const useWeatherStore = defineStore("weather", {
   }),
 
   actions: {
+    /**
+     * Fetch weather infos according to given city
+     * @param {*} cityName
+     * @param {*} unit
+     * @returns
+     */
     async fetchWeather(cityName, unit) {
       console.log("url", baseUrl);
+      console.log("api key", apiKey);
       const data = await fetch(
-        `${baseUrl}${cityName}&appid=${'6452ac286a14e3d7ed762086fb7c35e0'}&units=${unit}`
+        `${baseUrl}${cityName}&appid=${apiKey}&units=${unit}`
       ).then((response) => {
-        console.log(response);
         if (response.status == 404) {
           throw new Error(
-            "Le pays ou la ville que vous avez demandé n'existe pas. Veuillez revoir la saisie et réessayer"
+            "La ville que vous avez demandé n'existe pas. Veuillez revoir la saisie et réessayer"
           );
-        } else if (response.status == 404) {
+        } else if (response.status == 404 || response.status == 401) {
           throw new Error(
             "Une erreur est survenue! Merci de réessayer plus tard"
           );

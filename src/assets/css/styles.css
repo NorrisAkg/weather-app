@@ -15,6 +15,7 @@ body {
   left: 0;
 }
 
+/* Start main components container */
 .container {
   display: block;
   position: absolute;
@@ -30,8 +31,10 @@ body {
   background: linear-gradient(217deg, #fff 30%, #ddeaf0 90%);
   box-shadow: 0 0 6px #d9d9d9;
 }
+/* End main components container */
 
-/* Start Header styles */
+
+/* Start Header */
 .header {
   display: flex;
   flex-wrap: nowrap;
@@ -40,8 +43,8 @@ body {
 
 .header .search {
   display: flex;
-  flex: 0 0 65%;
-  max-width: 65%;
+  flex: 0 0 55%;
+  max-width: 55%;
   background-color: #fff;
   border: 1px solid #eee;
   border-radius: 5px;
@@ -67,48 +70,51 @@ body {
   outline: none;
   padding: 10px;
   text-align: center;
+  cursor: pointer;
 }
 
 .header .filter {
-  flex: 0 0 35%;
+  flex: 0 0 45%;
 }
 
 .header .filter select {
   display: block;
-  margin-left: 35px;
+  border: none;
+  outline: none;
+  margin-left: 20px;
   width: calc(100% - 35px);
   background-color: #fff;
   border: 1px solid #eee;
   border-radius: 5px;
   height: 35px;
 }
+/* End Header */
 
-/* End Header styles */
 
-/* Start body-meteo */
-.body-meteo {
+/* Start weather-body */
+.weather-body {
   display: block;
   position: relative;
-  padding-top: 50px;
+  padding-top: 60px;
 }
 
-.body-meteo .date {
+.weather-body .date {
   text-align: center;
 }
 
-.body-meteo .date .month-year {
+.weather-body .date .month-year {
   font-weight: normal;
   font-size: 13px;
 }
-.body-meteo .date .month-year,
-.body-meteo .date .day,
+.weather-body .date .month-year,
+.weather-body .date .day,
 .temperature .current-temperature h3 {
   line-height: 1;
   padding: 0;
   margin: 0;
 }
 
-.body-meteo .date .day {
+.weather-body .date .day {
   font-size: 30px;
 }
 
@@ -146,7 +152,15 @@ body {
   flex: 1;
 }
 
+.temperature .city span{
+  display: block;
+  padding-left: 30px;
+  max-width: 100%;
+}
+
 .temperature .city h3 {
+  margin: 0;
+  padding: 0;
   display: block;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -166,7 +180,7 @@ body {
   margin-top: 20px;
 }
 
-.body-meteo .sun-moon {
+.weather-body .sun-moon {
   position: absolute;
   top: 20px;
   right: 50px;
@@ -174,154 +188,57 @@ body {
   height: auto;
 }
 
-.body-meteo .weather-infos {
-  margin-top: 20px;
+.weather-body .weather-infos {
+  margin-top: 50px;
 }
 
-.body-meteo .weather-infos .infos-list {
+.weather-body .weather-infos .infos-list {
   margin: 0;
   padding: 0;
   list-style-type: none;
 }
 
-.body-meteo .weather-infos .infos-list li {
+.weather-body .weather-infos .infos-list li {
   display: flex;
-  /* justify-content: space-around; */
   padding: 5px 0;
   margin-bottom: 15px;
   list-style-type: none;
   border-top: 1px solid #eeeeee;
 }
 
-.body-meteo .weather-infos .infos-list li span {
-  display: block;
+.weather-body .weather-infos .infos-list li span {
+  display: flex;
+  align-items: end;
   font-size: 13px;
 }
 
-.body-meteo .weather-infos .infos-list li .title {
+.weather-body .weather-infos .infos-list li span .icon {
+  margin-right: 10px;
+}
+
+.weather-body .weather-infos .infos-list li .title {
   margin: 0;
   padding: 0;
   flex: 0 0 60%;
 }
 
-.body-meteo .weather-infos .infos-list li .value {
+.weather-body .weather-infos .infos-list li .value {
   margin: 0;
   padding: 0;
   flex: 0 0 40%;
 }
+/* End weather-body */
 
-/* */
 
-.filter-box {
-  display: flex;
+/* Start Error box */
+.error-box {
+  display: block;
+  width: 400px;
   margin: auto;
-  justify-content: center;
-  align-items: center;
+  padding: 5px 10px;
+  background-color: #f03e3e;
+  border-radius: 5px;
+  color: #eee;
+  font-size: 14px;
 }
-
-.name-box {
-  display: flex;
-  justify-content: start;
-}
-
-.name-box input {
-  display: block;
-  width: 17rem;
-  padding: 0 0.5rem;
-  border: none;
-  outline: none;
-  border-radius: 0.32rem;
-  font-size: 1rem;
-}
-
-.name-box button {
-  display: block;
-  padding: 0.5rem 0.7rem;
-  background: rgb(60, 180, 255);
-  border: none;
-  border-radius: 0.32rem;
-  outline: none;
-  margin-left: 0.3rem;
-  font-size: 1rem;
-  color: #fff;
-  font-weight: 700;
-}
-
-.name-box button:hover {
-  background: rgb(60, 180, 200);
-}
-
-.select-box {
-  margin-left: 2.5rem;
-  background: #ffffffb9;
-  border-radius: 0.32rem;
-  font-size: 1rem;
-}
-
-.select-box select {
-  display: block;
-  width: 17rem;
-  background: none;
-  border: none;
-  padding: 0.5rem 0.7rem;
-}
-
-.select-box select option {
-  background: none;
-  border: none;
-  padding: 1rem 0.7rem;
-  border-bottom: 1px solid;
-}
-
-.infos-content {
-  display: flex;
-  width: 100%;
-  box-sizing: border-box;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 3rem;
-}
-
-.infos-setion {
-  border-radius: 0.4rem;
-  width: 25rem;
-  margin-bottom: 0.88rem;
-  height: 15rem;
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
-}
-
-.temp {
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.1)),
-    url("./../images/white-cloud-blue-sky.jpg") no-repeat;
-}
-
-.city-name {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #fff;
-}
-
-.infos-setion p {
-  display: flex;
-  align-items: center;
-  color: #fff;
-}
-
-.city-name span,
-.infos-setion p span {
-  margin-left: 1rem;
-}
-
-.sun-block {
-  width: 5rem;
-  height: 5rem;
-  margin: 0.3rem auto 0.8rem auto;
-}
-
-.sun-block img {
-  width: 100%;
-  max-width: 100%;
-  max-height: 100%;
-}
+/* End main Error box */

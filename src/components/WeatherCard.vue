@@ -1,116 +1,105 @@
 <template>
-  <div class="body-meteo">
+  <div class="weather-body">
     <img class="sun-moon" src="./../assets/images/sun.svg" alt="" />
     <div class="date">
-      <h1 class="day">Vendredi</h1>
-      <h2 class="month-year">Décembre 2023</h2>
+      <h1 class="day">
+        <!-- Display current day to capitalize case -->
+        {{ currentDay.charAt(0).toUpperCase() + currentDay.slice(1) }}
+      </h1>
+      <h2 class="month-year">{{ currentDate }}</h2>
     </div>
     <div class="temperature">
+      <!-- City box -->
       <div class="city">
-        <h3>{{ (props.weather?.name) ?? "XXXXX" }}</h3>
+        <span>
+          <IconMapPin />
+        </span>
+        <h3 class="city-name">{{ props.weather?.name || "xxxxx" }}</h3>
       </div>
+      <!-- Display current temperature according to selected unit -->
       <div class="current-temperature">
-        <h3>{{ parseInt(props.weather?.main?.temp )?? "XXXXX" }}<sup>{{  props.unit == 'metric' ?'&#8451;'  :'	&#8457; '}}</sup></h3>
+        <h3>
+          <span>{{ parseInt(props.weather?.main?.temp) || "--" }}</span>
+          <sup>{{ props.unit == "metric" ? "&#8451;" : " &#8457; " }}</sup>
+        </h3>
       </div>
+      <!-- Display min and max temperature according to selected unit -->
       <div class="min-max-temperature">
-        <span>min&nbsp;:&nbsp;{{ props.weather?.main?.temp_min ?? "-----" }}<sup>{{  props.unit == 'metric' ?'&#8451;'  :'	&#8457; '}}</sup></span>
-        <span>max&nbsp;:&nbsp;{{ props.weather?.main?.temp_max ?? "-----" }}<sup>{{  props.unit == 'metric' ?'&#8451;'  :'	&#8457; '}}</sup></span>
+        <span class="min-temp"
+          >min&nbsp;:&nbsp;{{ parseInt(props.weather?.main?.temp_min) || "--"
+          }}<sup>{{
+            props.unit == "metric" ? "&#8451;" : " &#8457; "
+          }}</sup></span
+        >
+        <span class="max-temp"
+          >max&nbsp;:&nbsp;{{ parseInt(props.weather?.main?.temp_max) || "--"
+          }}<sup>{{
+            props.unit == "metric" ? "&#8451;" : " &#8457; "
+          }}</sup></span
+        >
       </div>
     </div>
 
+    <!-- Other weather informations box -->
     <div class="weather-infos">
       <ul class="infos-list">
         <li>
-          <span class="title">Titre</span><span class="value">Value</span>
+          <span class="title">
+            <IconSunrise size="15" class="icon" /> Heure du levée du soleil </span
+          ><span class="value sunrise">{{ sunriseHour || "--:--" }}</span>
         </li>
         <li>
-          <span class="title">Titre</span><span class="value">Value</span>
+          <span class="title">
+            <IconSunset size="15" class="icon" /> Heure du couchée du soleil </span
+          ><span class="value sunset">{{ sunsetHour || "--:--" }}</span>
         </li>
         <li>
-          <span class="title">Titre</span><span class="value">Value</span>
+          <span class="title">Humidité</span
+          ><span class="value himidity"
+            >{{ props.weather?.main?.humidity || "--" }} &#37;</span
+          >
         </li>
         <li>
-          <span class="title">Titre</span><span class="value">Value</span>
-        </li>
-        <li>
-          <span class="title">Titre</span><span class="value">Value</span>
+          <span class="title">Pression du vent</span
+          ><span class="value pressure"
+            >{{ props.weather?.main?.pressure || "---" }} Pa</span
+          >
         </li>
       </ul>
     </div>
   </div>
-
-  <!-- <div class="infos-content">
-    <div class="infos-setion temp">
-      <h2 class="city-name">
-        <IconMapPin /> <span>{{ props.weather?.name ?? "XXXXX" }}</span>
-      </h2>
-      <p>
-        <IconTemperature />
-        <span style="font-weight: 700"
-          >Température actuelle: {{ props.weather?.main?.temp ?? "-----" }} °{{
-            props.unit
-          }}</span
-        >
-      </p>
-      <p>
-        <IconTemperatureMinus />
-        <span style="font-weight: 700"
-          >Prévision minimale:
-          {{ props.weather?.main?.temp_min ?? "-----" }} °{{ props.unit }}</span
-        >
-      </p>
-      <p>
-        <IconTemperaturePlus />
-        <span style="font-weight: 700"
-          >Prévision maximale:
-          {{ props.weather?.main?.temp_max ?? "-----" }} °{{ props.unit }}</span
-        >
-      </p>
-    </div>
-    <div class="infos-setion temp">
-      <div class="sun-block">
-        <img src="./../assets/images/sun.svg" width="100" height="100" alt="" />
-      </div>
-      <p>
-        <IconSunrise />
-        <span style="font-weight: 700">Heure de levée: {{ sunsetHour }}</span>
-      </p>
-
-      <p>
-        <IconSunset />
-        <span style="font-weight: 700"
-          >Heure du couché: {{ sunriseHour }}
-        </span>
-      </p>
-    </div>
-  </div> -->
 </template>
 
 <script setup>
-// import { formatTimestamp } from "@/utils/formatter";
-// import { IconTemperaturePlus } from "@tabler/icons-vue";
-// import { IconSunrise } from "@tabler/icons-vue";
-// import { IconSunset } from "@tabler/icons-vue";
-// import { IconTemperature, IconTemperatureMinus } from "@tabler/icons-vue";
-// import { IconTemperatureCelsius } from "@tabler/icons-vue";
-// import { IconMapPin } from "@tabler/icons-vue";
-// import { IconCloudFilled } from "@tabler/icons-vue";
-import { defineProps, onMounted } from "vue";
+import { formatTimestamp, getTimestampHour } from "@/utils/formatter";
+import { IconMapPin, IconSunset, IconSunrise } from "@tabler/icons-vue";
+import { defineProps, computed } from "vue";
+
 const props = defineProps(["weather", "unit"]);
 
-// const sunriseHour = computed(() => {
-//   return formatTimestamp(props.weather?.sys?.sunrise);
-// });
+const currentDay = computed(() => {
+  return formatTimestamp(props.weather?.sys?.sunset).toLocaleDateString(
+    `fr-${props.weather?.sys?.country}`,
+    { weekday: "long" }
+  );
+});
 
-// const sunsetHour = computed(() => {
-//   return formatTimestamp(props.weather?.sys?.sunset);
-// });
+const currentDate = computed(() => {
+  return formatTimestamp(props.weather?.sys?.sunset).toLocaleDateString(
+    `fr-${props.weather?.sys?.country}`,
+    { day: "2-digit", month: "long", year: "numeric" }
+  );
+});
 
-onMounted(() => {
-  console.log(props.weather);
-  console.log("unit " + props.unit);
+const sunsetHour = computed(() => {
+  let sunset = props.weather?.sys?.sunset;
+  let hour = getTimestampHour(sunset, props.weather?.sys?.country);
+  return sunset ? `${hour[0]}:${hour[1]}` : "";
+});
+
+const sunriseHour = computed(() => {
+  let sunrise = props.weather?.sys?.sunrise;
+  let hour = getTimestampHour(sunrise, props.weather?.sys?.country);
+  return sunrise ? `${hour[0]}:${hour[1]}` : "";
 });
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped></style>

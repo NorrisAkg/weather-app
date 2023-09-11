@@ -1,11 +1,16 @@
 import { setActivePinia, createPinia } from "pinia";
+import { createApp } from 'vue';
 import { useWeatherStore } from "./Weather";
 
+
 describe("Weather", () => {
+  const app = createApp({})
+  const pinia = createPinia()
+  app.use(pinia)
   const weatherStore = useWeatherStore();
 
   beforeEach(() => {
-    setActivePinia(createPinia());
+    setActivePinia(pinia);
   });
 
   it("should fetch weather data", async () => {
@@ -16,10 +21,14 @@ describe("Weather", () => {
       },
     });
 
-    const cityName = "France";
-    const unit = "metrics";
+    const cityName = "Cotonou";
+    const unit = "metric";
 
-    await weatherStore.fetchWeather(cityName, unit);
+    await weatherStore.fetchWeather(cityName, unit).then((response) => {
+      weatherStore.$patch({
+        weather: response,
+      });
+    });
 
     expect(weatherStore.weather).toEqual(
       expect.objectContaining({

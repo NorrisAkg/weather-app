@@ -2,6 +2,8 @@
   <div class="container">
     <CitySearch @change-name="onUpdateName" @unit-selected="onChangeUnit" />
     <WeatherCard :weather="weatherStore.weather" :unit="unit" />
+    <!-- Error box to display error when occured -->
+    <div class="error-box" v-if="errorOccured">{{ error?.toString().split(': ')[1] }}</div>
   </div>
 </template>
 
@@ -12,43 +14,52 @@ import WeatherCard from "./components/WeatherCard.vue";
 import { useWeatherStore } from "./stores/Weather.js";
 
 const weatherStore = useWeatherStore();
-// const weather = ref(0);
 const city = ref("Cotonou");
 const unit = ref("metric");
+const errorOccured = ref(false);
+const error = ref("");
 
+/**
+ * Handle city changing
+ * @param {*} e 
+ */
 const onUpdateName = (e) => {
   city.value = e;
 };
 
+/**
+ * Handle unit changing
+ * @param {*} e 
+ */
 const onChangeUnit = (e) => {
   unit.value = e;
 };
 
 const getWeather = () => {
-  console.log("fetchimg");
-  weatherStore
+  useWeatherStore()
     .fetchWeather(city.value, unit.value)
     .then((result) => {
       weatherStore.$patch({
         weather: result,
       });
-      console.log(result)
     })
-    .catch((error) => {
-      console.log(error);
+    .catch((err) => {
+      errorOccured.value = true;
+      error.value = err;
+    })
+    .finally(() => {
+      setTimeout(() => {
+        errorOccured.value = false;
+        error.value = '';
+      }, 2500);
     });
 };
-
-// const unitSign = computed(() => {
-//   return unit.value == "metric" ? "C" : "F"
-// });
 
 watch(city, (val) => {
   if (val != "") getWeather();
 });
 
-watch(unit, (_) => {
-  console.log(_);
+watch(unit, () => {
   getWeather();
 });
 

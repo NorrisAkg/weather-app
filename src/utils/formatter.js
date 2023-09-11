@@ -1,7 +1,22 @@
+/**
+ * Format date from given timestamp
+ * @param {*} timestamp 
+ * @returns 
+ */
 export const formatTimestamp = (timestamp) => {
-    const date = new Date(timestamp * 1000);
-    console.log(date);
+  return new Date(timestamp * 1000);
+};
 
-    const time = date.toLocaleTimeString("fr-Bj")
-    return time
-}
+/**
+ * Format given timestamp and return time
+ * @param {*} timestamp 
+ * @param {*} localeIso 
+ * @returns 
+ */
+export const getTimestampHour = (timestamp, localeIso) => {
+  const date = new Date(timestamp * 1000);
+
+  return date
+    .toLocaleTimeString(`fr-${localeIso}`)
+    .split(":");
+};
