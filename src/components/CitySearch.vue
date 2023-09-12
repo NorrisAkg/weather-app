@@ -3,6 +3,7 @@
     <div class="search">
       <label title="recherche"
         ><input
+        ref="searchInput"
           type="text"
           placeholder="Rechercher par nom de ville..."
           @keypress.enter="onSubmit"
@@ -24,6 +25,7 @@
 import { IconSearch } from "@tabler/icons-vue";
 import { ref, defineEmits } from "vue";
 
+const searchInput = ref(null)
 const emit = defineEmits(["changeName", "unitSelected"]);
 const cityName = ref("");
 const unit = ref("");
@@ -35,6 +37,7 @@ const onSubmit = () => {
   let city = cityName.value;
   emit("changeName", city);
   resetName();
+  searchInput.value.focus()
 };
 
 /**
